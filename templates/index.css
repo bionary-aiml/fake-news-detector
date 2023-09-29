@@ -44,7 +44,7 @@ body {
     box-sizing: border-box;
 
     ::placeholder {
-        color: #f0f0f0;
+        color: #201f1f;
     }
 }
 

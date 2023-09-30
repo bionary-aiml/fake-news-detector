@@ -1,7 +1,7 @@
 body {
     display: flex;
     justify-content: center;
-    background-image: linear-gradient(rgba(25, 26, 34, 0.9), rgba(25, 26, 34, 0.9)), url(../assets/bg.jpg);
+    background-image: linear-gradient(rgba(25, 26, 34, 0.9), rgba(25, 26, 34, 0.9)), url(../static/assets/bg.jpg);
     background-size: cover;
     align-items: center;
     height: 100vh;
@@ -68,6 +68,22 @@ body {
 .submit:hover {
     background-color: #d2691e;
 }
+
+.result {
+    margin-top: 20px;
+  }
+  
+.prediction-box {
+    background-color: rgba(255, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+.prediction-box h1 {
+    color: #ffffff;
+}
+  
 
 .bg-credits {
     position: absolute;

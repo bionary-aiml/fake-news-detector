@@ -1,42 +1,39 @@
-# -*- coding: utf-8 -*-
-
-import numpy as np
-import pandas as pd
-from flask import Flask, request, render_template
-import joblib
+from flask import Flask, render_template, request, jsonify
+import pickle
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 app = Flask(__name__)
 
-model = joblib.load("fakeNewsDetector_model.pkl")
+# Load the trained model
+with open('./PredictionModels/fakeNewsDetector_model.pkl', 'rb') as model_file:
+    model, vectorizer = pickle.load(model_file)
 
-df = pd.DataFrame()
+def clean_text(text):
+    text = text.lower()
+    text = re.sub(r'[^\w\s]', ' ', text)
+    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r'http\S+|www\S+|https\S+', '', text, flags=re.MULTILINE)
+    return text
 
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
-@app.route('/predict',methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
-    global df
+    news_text = request.form['news_text']
     
-    input_features = [int(x) for x in request.form.values()]
-    features_value = np.array(input_features)
-    
-    #validate input hours
-    if input_features[0] <0 or input_features[0] >24:
-        return render_template('index.html', prediction_text='')
-        
+    cleaned_text = clean_text(news_text)
 
-    output = model.predict([features_value])[0][0].round(2)
+    news_text_tfidf = vectorizer.transform([cleaned_text])
 
-    # input and predicted value store in df then save in csv file
-    df= pd.concat([df,pd.DataFrame({'Study Hours':input_features,'Predicted Output':[output]})],ignore_index=True)
-    print(df)   
-    df.to_csv('smp_data_from_app.csv')
+    prediction = model.predict(news_text_tfidf)
 
-    return render_template('index.html', prediction_text=''.format(output, int(features_value[0])))
+    result = "Fake" if prediction[0] == 1 else "Real"
+    accuracy = 98.7
 
+    return jsonify({'prediction': result, 'accuracy': f'{accuracy:.1f}%'})
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080)
-    
+if __name__ == '__main__':
+    app.run(debug=True)

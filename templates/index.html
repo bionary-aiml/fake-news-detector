@@ -4,36 +4,57 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fake News Detector</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='index.css') }}"
+    />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-      $(document).ready(function(){
-        $('.submit').click(function(e){
+      $(document).ready(function () {
+        $('.submit').click(function (e) {
           e.preventDefault();
           var newsText = $('.box-content').val();
           $.ajax({
             type: 'POST',
             url: '/predict',
-            data: {'news_text': newsText},
-            success: function(result){
-              $('.result').html('<div class="prediction-box">' +
-                                 '<h1>The news is ' + result.prediction + '</h1>' +
-                                 '<p>Accuracy: ' + result.accuracy + '</p>' +
-                                 '</div>');
-            }
+            data: { news_text: newsText },
+            success: function (result) {
+              $('.result').html(
+                '<div class="prediction-box ' +
+                  result.prediction +
+                  '">' +
+                  '<h1>The news is ' +
+                  result.prediction +
+                  '!</h1>' +
+                  // '<p>Accuracy: ' +
+                  // result.accuracy +
+                  // '</p>' +
+                  '</div>'
+              );
+            },
           });
         });
       });
     </script>
   </head>
   <body>
+    <div class="result"></div>
     <div class="box">
       <div class="box-header">Fake News Detector</div>
       <input type="text" class="box-content" placeholder="Enter News" />
       <button class="submit">Submit!</button>
     </div>
-    <div class="result"></div>
-    <p class="bg-credits">Photo by <a href="https://unsplash.com/@rishabhben?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Rishabh Sharma</a> on <a href="https://unsplash.com/photos/R-js25Pv1LQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+    <p class="bg-credits">
+      Photo by
+      <a
+        href="https://unsplash.com/@rishabhben?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+        >Rishabh Sharma</a
+      >
+      on
+      <a
+        href="https://unsplash.com/photos/R-js25Pv1LQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+        >Unsplash</a
+      >
     </p>
   </body>
 </html>

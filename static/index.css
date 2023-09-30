@@ -70,20 +70,32 @@ body {
 }
 
 .result {
+    position: absolute;
+    top: 0;
     margin-top: 20px;
-  }
-  
+}
+
 .prediction-box {
-    background-color: rgba(255, 0, 0, 0.5);
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 1em;
     margin-top: 10px;
-  }
-  
+    width: 90ch;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+}
+
 .prediction-box h1 {
     color: #ffffff;
 }
-  
+
+.Real {
+    background-color: rgba(173, 255, 47, 0.7);
+}
+
+.Fake {
+    background-color: rgb(220, 10, 10, 0.7);
+}
 
 .bg-credits {
     position: absolute;
